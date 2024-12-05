@@ -115,15 +115,48 @@ Sau khi chạy seed, hệ thống sẽ tạo sẵn 3 tài khoản với các vai
 
 ## Chạy Seed Data
 
-Để tạo dữ liệu mẫu, chạy lệnh sau:
+Để tạo dữ liệu mẫu với các tài khoản mặc định, chạy lệnh sau:
 ```bash
-npm run seed:run
+npm run seed
 ```
 
-Lệnh này sẽ tạo:
-- 3 tài khoản với các vai trò khác nhau
-- Các danh mục sách mẫu
-- Một số sách mẫu trong mỗi danh mục
+Lệnh này sẽ tạo 3 tài khoản mặc định:
+- Admin (quyền ADMIN)
+- Thủ thư (quyền LIBRARIAN)
+- Người dùng thông thường (quyền USER)
+
+Mật khẩu cho tất cả tài khoản mặc định là: `Test123!`
+
+Bạn có thể sử dụng các tài khoản này để test các chức năng khác nhau của hệ thống:
+- Tài khoản admin: Quản lý người dùng, danh mục, sách
+- Tài khoản thủ thư: Quản lý danh mục và sách
+- Tài khoản người dùng: Mượn/trả sách
+
+*Lưu ý: Nếu các tài khoản đã tồn tại, script sẽ bỏ qua việc tạo tài khoản đó và thông báo trong console.*
+
+## Reset Database (Chỉ dùng cho môi trường test)
+
+Để xóa toàn bộ dữ liệu và tạo lại dữ liệu mặc định, gọi API sau:
+
+```bash
+curl -X POST http://localhost:3000/database/reset
+```
+
+API này sẽ:
+1. Xóa toàn bộ dữ liệu hiện có
+2. Tạo 3 tài khoản mặc định:
+   - Admin (admin@example.com)
+   - Thủ thư (librarian@example.com)
+   - Người dùng (user@example.com)
+3. Tạo các danh mục sách mẫu:
+   - Văn học
+   - Khoa học
+   - Thiếu nhi
+4. Tạo một số sách mẫu trong mỗi danh mục
+
+*Lưu ý: API này chỉ nên được sử dụng trong môi trường test. Không sử dụng trong môi trường production.*
+
+Mật khẩu cho tất cả tài khoản mặc định là: `Test123!`
 
 ## Người Đóng Góp
 

@@ -12,6 +12,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SeedsModule } from './seeds/seeds.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SeedsModule } from './seeds/seeds.module';
     BooksModule,
     CategoriesModule,
     SeedsModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

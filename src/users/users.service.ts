@@ -93,4 +93,14 @@ export class UsersService {
     delete user.password;
     return user;
   }
+
+  async updateProfilePicture(userId: number, profilePicturePath: string): Promise<User> {
+    const user = await this.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('Không tìm thấy người dùng');
+    }
+
+    user.profilePicture = profilePicturePath;
+    return this.userRepository.save(user);
+  }
 }

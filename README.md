@@ -1,4 +1,3 @@
-
 # Hệ Thống Quản Lý Thư Viện
 
 Ứng dụng quản lý thư viện được xây dựng bằng NestJS với đầy đủ chức năng quản lý sách, danh mục và người dùng.
@@ -91,6 +90,40 @@ src/
 - Sử dụng JWT cho xác thực
 - Mã hóa mật khẩu với bcrypt
 - Phân quyền dựa trên vai trò (RBAC)
+
+## Tài Khoản Mặc Định
+
+Sau khi chạy seed, hệ thống sẽ tạo sẵn 3 tài khoản với các vai trò khác nhau:
+
+1. Tài khoản Admin:
+   - Username: admin
+   - Password: Test123!
+   - Role: ADMIN
+   - Email: admin@example.com
+
+2. Tài khoản Thủ Thư:
+   - Username: librarian
+   - Password: Test123!
+   - Role: LIBRARIAN
+   - Email: librarian@example.com
+
+3. Tài khoản Người Dùng:
+   - Username: user
+   - Password: Test123!
+   - Role: USER
+   - Email: user@example.com
+
+## Chạy Seed Data
+
+Để tạo dữ liệu mẫu, chạy lệnh sau:
+```bash
+npm run seed:run
+```
+
+Lệnh này sẽ tạo:
+- 3 tài khoản với các vai trò khác nhau
+- Các danh mục sách mẫu
+- Một số sách mẫu trong mỗi danh mục
 
 ## Người Đóng Góp
 

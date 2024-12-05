@@ -26,7 +26,18 @@ import {
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiConsumes,
 } from '@nestjs/swagger';
+import { 
+  UseInterceptors, 
+  UploadedFile,
+  ParseFilePipeBuilder,
+  HttpStatus,
+  Request
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @ApiTags('users')
 @Controller('users')
@@ -88,5 +99,60 @@ export class UsersController {
     @GetUser() currentUser: User,
   ): Promise<User> {
     return this.usersService.disableUser(id, currentUser);
+  }
+
+  @Post('profile-upload')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Tải lên ảnh đại diện' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Ảnh đại diện (chỉ chấp nhận .jpg, .jpeg, .png)',
+        },
+      },
+    },
+  })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/profiles',
+        filename: (req, file, callback) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          callback(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+          return callback(new Error('Chỉ chấp nhận file ảnh có định dạng jpg, jpeg, png'), false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  async uploadProfilePicture(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /(jpg|jpeg|png)$/,
+        })
+        .addMaxSizeValidator({
+          maxSize: 5 * 1024 * 1024, // 5MB
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+    @Request() req,
+  ) {
+    const userId = req.user.id;
+    const profilePicturePath = file.path.replace(/\\/g, '/');
+    return this.usersService.updateProfilePicture(userId, profilePicturePath);
   }
 }

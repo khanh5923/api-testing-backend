@@ -12,11 +12,11 @@ export enum UserRole {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  @ApiProperty()
+  @ApiProperty({ description: 'ID của người dùng' })
   id: number;
 
   @Column({ unique: true })
-  @ApiProperty()
+  @ApiProperty({ description: 'Tên đăng nhập' })
   username: string;
 
   @Column()
@@ -38,6 +38,10 @@ export class User {
   @Column({ default: true })
   @ApiProperty()
   isActive: boolean;
+
+  @Column({ nullable: true })
+  @ApiProperty({ description: 'Đường dẫn ảnh đại diện', required: false })
+  profilePicture: string;
 
   @OneToMany(() => BorrowHistory, borrowHistory => borrowHistory.user)
   borrowHistory: BorrowHistory[];

@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User, UserRole } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -25,7 +25,7 @@ export class AuthService {
       username,
       password: hashedPassword,
       email,
-      role,
+      role: role || UserRole.USER,
     });
 
     try {

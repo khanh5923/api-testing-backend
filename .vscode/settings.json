@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:003-book-app}/library.db",
+            "name": "library"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
